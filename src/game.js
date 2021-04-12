@@ -1,36 +1,36 @@
-import carta from "./assets/cardBack_green5.png";
+/*import card from "./cardBack_green5.png";
 import left from "./assets/arrowSilver_left.png";
 import right from "./assets/arrowSilver_right.png";
 import buy from "./assets/buy.png";
-import swal from 'sweetalert';
+import swal from 'sweetalert';*/
 
 /*
 TODOS OS SIMBOLOS PERMITIDOS
  */
-const simbolos = [
-    'Espadas',
-    'Coracoes',
-    'Ouros',
-    'Diamantes'
+const suits = [
+    'Spades',
+    'Hearts',
+    'Clubs',
+    'Diamonds'
 ]
 
 /*
 TODOS OS VALOR POSSIVEIS
  */
-const cartaValor = [
+const values = [
     '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'
 ]
 
 /*
 OBTEM A CARTA DOS ASSETS
  */
-const obterNomeCarta = (simbolo, valor) => {
-    setPoints(simbolo, valor);
-    return 'cards${simbolo}${valor}'
+const getCardName = (suit, value) => {
+    setPoints(suit, value);
+    return `card${suit}${value}`
 }
 
-let cartas = []; //ARRAY DE CARTAS
-let score = []; //ARRAY DE PONTOS
+let cards = []; //ARRAY DE CARTAS
+let ScorePoints = []; //ARRAY DE PONTOS
 
 /*
 CONFIG PHASER
@@ -42,10 +42,6 @@ var config = {
   scene: {
     preload: preload,
     create: create
-  },
-  scale: {
-    mode: Phaser.Scale.FIT,
-    autoCenter: Phaser.Scale.CENTER_BOTH,
   }
 };
 
@@ -56,9 +52,9 @@ const width = 800;
 const height = 600;
 const x = width*0.5;  //centra
 const y = height*0.5; //centra
-let nomeCarta = "";
-let pontos;
-let dicas;
+let cardName = "";
+let points;
+let tips;
 
 /*
 INICIAÇÃO DO JOGO
@@ -68,57 +64,57 @@ const game = new Phaser.Game(config);
 /*
 Função para gerar valor random dos simbolos das cartas
  */
-function gerarSimbolo(){
-  var randomSimbolo = Math.floor(Math.random()*simbolos.length);  //Escolhe um simbolo aleatorio tendo em conta o array
-  return simbolos[randomSimbolo];                                 //Devolve o simbolo gerado
+function currentSuit(){
+  var randomSimbolo = Math.floor(Math.random()*suits.length);  //Escolhe um simbolo aleatorio tendo em conta o array
+  return suits[randomSimbolo];                                 //Devolve o simbolo gerado
 }
 
 /*
 Função para gerar valor random dos números das cartas
  */
-function gerarNumero(){
-  var randomValor = Math.floor(Math.random()*cartaValor.length);   //Escolhe uma carta aleatoria tendo em conta o array
+function curentValue(){
+  var randomValor = Math.floor(Math.random()*values.length);   //Escolhe uma carta aleatoria tendo em conta o array
   if(randomValor < 0){                                              //Se o nº gerado menor que 0
-    return cartaValor[0];                                           //Devolve sempre o valor na posição 0 (nº 2)
+    return values[0];                                           //Devolve sempre o valor na posição 0 (nº 2)
   }
 
-  return cartaValor[randomValor];                                   //Devolve o valor gerado
+  return values[randomValor];                                   //Devolve o valor gerado
 }
 
 /*
 FUNÇÃO PARA OBTER A CARTA ESPECIFICA EX: 2 COPAS
  */
-function cartaAtual(){
-  return obterNomeCarta(gerarSimbolo(), gerarNumero());
+function currentCardName(){
+  return getCardName(currentSuit(), curentValue());
 }
 
 /*
 FUNÇÃO PRELOAD
  */
 function preload(){
-    this.load.image["card-back", card];
-    this.load.image["cursor", cursor];
-    this.load.image["left", left];
-    this.load.image["rifgt", right];
+    this.load.image["card-back", './assets/cardBack_green5.png'];
+    /*this.load.image["cursor", cursor];*/
+    this.load.image["left", "./assets/arrowSilver_left.png"];
+    this.load.image["right", "./assets/arrowSilver_right.png"];
 }
 
 /*
 Definição do score e das dicas
  */
-pontos = this.add.text(x - 300, y - 200, "Pontos: 0");
-dicas = this.add.text(x - 300, y - 220, "");
+/*points = this.add.text(x - 300, y - 200, "Pontos: 0");
+tips = this.add.text(x - 300, y - 220, "");
 
 /*
 FUNÇÃO CREATED
  */
-function created(){
+function create(){
   console.log("Executado com sucesso");         //Permite ver a consola se iniciou corretamente
 
-  if(this.textures.exists(nomeCarta)){
-      return this.image(x, y, nomeCarta)
+  if(this.textures.exists(cardName)){
+      return this.image(x, y, cardName)
   }
 
-  let cartaTras = this.image(x, y, 'card-back');
+  let cardBack = this.add.image(x, y, 'card-back');
 
 /*
 Utilização das setas do teclado
@@ -129,15 +125,16 @@ let right = this.add.image(x + 140, y + 200, 'right');
 this.add.text(x + 160,y + 190, "Key Right: Remove Card");
 
 const leftArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
-leftArrow.on('up', () => {
+/*leftArrow.on('up', () => )*/
+if(leftArrow.isUp){
 
-    if(insertedCoins <= 0){
+    /*if(insertedCoins <= 0){
         insertCoins();
         return;
     }else if(insertedCoins < 10){
         insertCoins();
         return;
-    }
+    }*/
     console.log("left");
 
 
@@ -146,45 +143,44 @@ leftArrow.on('up', () => {
     })
 
 
-    nomeCarta = cartaAtual();
+    cardName = currentCardName();
 
     // carreganto texturas
-    let carta = this.add.image(x, y, 'card-back')
+    let card = this.add.image(x, y, 'card-back')
 
     // load no plugin phaser para carregar minhas cartas
     this.load.image(cardName, `./assets/${cardName}.png`);
-    this.load.once(Phaser.Loader.Events.COMPLETE, () => {
+    this.load.once('complete', () => {
         // texture loaded so use instead of the placeholder
-        carta.setTexture(cardName)
+        card.setTexture(cardName)
     })
     this.load.start()
 
 
-    carta.push(carta)
-    console.log(cartas);
+    cards.push(card)
+    console.log(cards);
 
-})
+}
 
 
-
-const rightArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
+/*const rightArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
 rightArrow.on('up', () => {
     console.log("right");
-    if (cartas.length <= 0)
+    if (cards.length <= 0)
     {
         return
     }
 
-    const carta = cartas.pop();
-    if(carta === null){
+    const card = cards.pop();
+    if(card === null){
         console.log('can not be null');
     }
-    carta.destroy();
+    card.destroy();
 
-    cartas.forEach(carta => {
-        carta.x += 20
+    cards.forEach(carta => {
+        card.x += 20
     })
-})
+})*/
 // const topArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP) 
 // topArrow.on('up', () => {
 // 	console.log("top arrow");
@@ -193,6 +189,47 @@ rightArrow.on('up', () => {
 }
 
 /*
-6:37
+Substituir valor de letras por pontos
  */
+function setPoints(suit, value){
+    console.log(suit);
+    console.log(value);
 
+    let point;
+    switch (value){
+        case 'A':
+            point = 11;
+            break;
+        case 'J':
+        case 'Q':
+        case 'K':
+            point = 10;
+            break;
+        default:
+            point = value;
+    }
+    ScorePoints.push(point.toString());
+
+    //Calcula os ponto
+    const reducer = (accumulater, currentValue) => parseInt(accumulater) + parseInt(currentValue);
+    const myTotal = ScorePoints.reduce(reducer);
+
+    /*points.setText("Pontos: " + myTotal);*/
+
+    gameStatus(myTotal);
+}
+
+function gameStatus(myTotal){
+    if(myTotal == 20 || myTotal ==19){
+        game.scene.pause("default");
+
+        points.setText("Pontos: " + myTotal);
+        tips.setText("Game Over");
+    }
+    if(myTotal == 21){
+        game.scene.pause("default");
+
+        points.setText("Pontos: " + myTotal);
+        tips.setText("Parabéns acabou de ganhar!!");
+    }
+}
