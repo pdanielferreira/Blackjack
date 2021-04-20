@@ -50,7 +50,7 @@ const y = height*0.5; //centra
 var cardName = "";
 var points;
 var tips;
-
+var cursors;
 /*
 INICIAÇÃO DO JOGO
  */
@@ -142,14 +142,18 @@ function create() {
 	points = this.add.text(16, 16, 'Pontos: 0', { fontSize: '32px', fill: '#fff' });
 	/* --- Inicializar Dicas --- */
 	tips = this.add.text(16, 50, 'Dica: És bom demais para dicas', { fontSize: '30px', fill: '#fff' });
+
+
+	cursors = this.input.keyboard.createCursorKeys();
 }
 
 /* -------------------------------------------------------------------------------------- */
 /* --------------------------------------- Update --------------------------------------- */
 /* -------------------------------------------------------------------------------------- */
 function update (){
-	const leftArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
-	if(leftArrow.isDown){
+	//const leftArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
+	//if(leftArrow.isDown){
+	if(this.input.keyboard.checkDown(cursors.left, 250)){
 		console.log("Gerou");
 
 
