@@ -15,6 +15,8 @@ const values = [
 	'2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'
 ]
 
+var inicio = 0;
+
 /*
 OBTEM A CARTA DOS ASSETS
  */
@@ -139,7 +141,7 @@ function create() {
 	console.log(cards);
 
 	/* --- Inicializar Pontos --- */
-	points = this.add.text(16, 16, 'Pontos: 0', { fontSize: '32px', fill: '#fff' });
+	points = this.add.text(16, 16, 'Pontos: ' + ScorePoints[0], { fontSize: '32px', fill: '#fff' });
 	/* --- Inicializar Dicas --- */
 	tips = this.add.text(16, 50, 'Dica: És bom demais para dicas', { fontSize: '30px', fill: '#fff' });
 
@@ -183,8 +185,7 @@ function update (){
 	if(this.input.keyboard.checkDown(cursors.right, 250)) {
 		console.log("Carregou Direita");
 		
-		if (cards.length <= 0)
-		{
+		if (cards.length <= 0) {
 			return
 		}
 
@@ -204,8 +205,8 @@ function update (){
 /**
  * <h3> Substituir valor de letras por pontos
  *
- * @param suit ->
- * @param value ->
+ * @param suit  - simbolo da carta
+ * @param value - valor da carta
  */
 function setPoints(suit, value){
 	console.log(suit);
@@ -230,21 +231,42 @@ function setPoints(suit, value){
 	const reducer = (accumulater, currentValue) => parseInt(accumulater) + parseInt(currentValue);
 	const myTotal = ScorePoints.reduce(reducer);
 
-	//points.setText("Pontos: " + myTotal);
-	gameStatus(myTotal);
+	//	Verifica se é a primeira jogada
+	if(inicio == 0) {
+		console.log("Let the games begin");
+		inicio = 1;
+	} else {
+		gameStatus(myTotal);
+	}
 }
 
 function gameStatus(myTotal){
+	/* --- "Normal" --- */
+	if(myTotal > 1 && myTotal < 21){
+		//game.scene.pause("default");
+		console.log(myTotal);
+		console.log(points);
+		points.setText("Pontos: " + myTotal);
+		//tips.setText("Game Over");
+	}
+	/* --- Quase a perder --- */
 	if(myTotal == 20 || myTotal ==19){
-		game.scene.pause("default");
+		//game.scene.pause("default");
 
 		points.setText("Pontos: " + myTotal);
-		tips.setText("Game Over");
+		tips.setText("Dica: *nervous-sweats*");
 	}
+	/* --- Ganhou --- */
 	if(myTotal == 21){
 		game.scene.pause("default");
 
 		points.setText("Pontos: " + myTotal);
 		tips.setText("Parabéns acabou de ganhar!!");
 	}
+	/* --- Perdeu --- */
+	if(myTotal > 21) {
+		game.scene.pause("default");
+
+		points.setText("Pontos: " + myTotal);
+		tips.setText("Game Over X(");	}
 }
