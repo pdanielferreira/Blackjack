@@ -153,7 +153,7 @@ function create() {
 function update (){
 	//const leftArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
 	//if(leftArrow.isDown){
-	if(this.input.keyboard.checkDown(cursors.left, 250)){
+	if(this.input.keyboard.checkDown(cursors.left, 250)) {
 		console.log("Gerou");
 
 
@@ -178,28 +178,13 @@ function update (){
 
 		cards.push(card)
 		console.log(cards);
-
-
 	}
-	//----------------------------------------------------------------------------------------------------------------------
-	//const leftArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
-	/*leftArrow.on('up', () => )*/
-	//if(leftArrow.isUp){
 
-	/*if(insertedCoins <= 0){
-		insertCoins();
-		return;
-	}else if(insertedCoins < 10){
-		insertCoins();
-		return;
-	}*/
-
-	/*	const rightArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
-
-	rightArrow.on('up', () => {
-		console.log("right");
-
-		if (cards.length <= 0) {
+	if(this.input.keyboard.checkDown(cursors.right, 250)) {
+		console.log("Carregou Direita");
+		
+		if (cards.length <= 0)
+		{
 			return
 		}
 
@@ -212,41 +197,9 @@ function update (){
 		cards.forEach(carta => {
 			card.x += 20
 		})
-	})*/
-// const topArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP) 
-// topArrow.on('up', () => {
-// 	console.log("top arrow");
-// 	this.scene.restart(game);
-// })
-//}
+	}
 }
 
-function setaLeft(){
-	console.log("Gerou");
-
-
-	cards.forEach(card => {
-		card.x -= 20
-	})
-
-
-	cardName = currentCardName();
-
-	// carreganto texturas
-	//let card = this.add.image(x, y, 'card-back')
-
-	// load no plugin phaser para carregar minhas cartas
-	this.load.image(cardName, `./assets/${cardName}.png`);
-	this.load.once('complete', () => {
-		// texture loaded so use instead of the placeholder
-		card.setTexture(cardName)
-	})
-	this.load.start()
-
-
-	cards.push(card)
-	console.log(cards);
-}
 
 /**
  * <h3> Substituir valor de letras por pontos
