@@ -35,8 +35,8 @@ var config = {
 	height: 600,
 	scene: {
 		preload: preload,
-		create: create/*,
-		update:update*/
+		create: create,
+		update:update
 	}
 };
 
@@ -87,10 +87,10 @@ function currentCardName(){
 /* --------------------------------------- Preload --------------------------------------- */
 /* --------------------------------------------------------------------------------------- */
 function preload(){
-	this.load.image["card-back", './assets/cardBack_green5.png'];
+	this.load.image("card-back", './assets/cardBack_green5.png');
 	/*this.load.image["cursor", cursor];*/
-	this.load.image["left", "./assets/arrowSilver_left.png"];
-	this.load.image["right", "./assets/arrowSilver_right.png"];
+	this.load.image('left', './assets/arrowSilver_left.png');
+	this.load.image("right", "./assets/arrowSilver_right.png");
 }
 
 
@@ -109,10 +109,10 @@ function create() {
 	/*
 	Utilização das setas do teclado
 	 */
-	let left = this.add.image(x + 140, y + 150, 'left');
-	this.add.text(x + 160,y + 140, "Key Left: Next Card");
-	let right = this.add.image(x + 140, y + 200, 'right');
-	this.add.text(x + 160,y + 190, "Key Right: Remove Card");
+	let left = this.add.image(x + 60, y + 150, 'left');
+	this.add.text(x + 80,y + 140, "Seta Esquerda: Pedir mais cartas");
+	let right = this.add.image(x + 60, y + 200, 'right');
+	this.add.text(x + 80,y + 190, "Seta Direita: Esconder cartas");
 
 
 	console.log("left");
@@ -148,6 +148,10 @@ function create() {
 /* --------------------------------------- Update --------------------------------------- */
 /* -------------------------------------------------------------------------------------- */
 function update (){
+	const leftArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
+	if(leftArrow.isUp){
+		setaLeft();
+	}
 	//----------------------------------------------------------------------------------------------------------------------
 	//const leftArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
 	/*leftArrow.on('up', () => )*/
@@ -188,6 +192,33 @@ function update (){
 //}
 }
 
+function setaLeft(){
+	console.log("Gerou");
+
+
+	cards.forEach(card => {
+		card.x -= 20
+	})
+
+
+	cardName = currentCardName();
+
+	// carreganto texturas
+	let card = this.add.image(x, y, 'card-back')
+
+	// load no plugin phaser para carregar minhas cartas
+	this.load.image(cardName, `./assets/${cardName}.png`);
+	this.load.once('complete', () => {
+		// texture loaded so use instead of the placeholder
+		card.setTexture(cardName)
+	})
+	this.load.start()
+
+
+	cards.push(card)
+	console.log(cards);
+}
+
 /**
  * <h3> Substituir valor de letras por pontos
  *
@@ -217,8 +248,7 @@ function setPoints(suit, value){
 	const reducer = (accumulater, currentValue) => parseInt(accumulater) + parseInt(currentValue);
 	const myTotal = ScorePoints.reduce(reducer);
 
-	points.setText("Pontos: " + myTotal);
-
+	//points.setText("Pontos: " + myTotal);
 	gameStatus(myTotal);
 }
 
