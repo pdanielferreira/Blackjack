@@ -53,6 +53,7 @@ var cardName = "";
 var points;
 var tips;
 var cursors;
+
 /*
 INICIAÇÃO DO JOGO
  */
@@ -115,6 +116,7 @@ function create() {
 	this.add.text(x + 80,y + 140, "Seta Esquerda: Pedir mais cartas");
 	let right = this.add.image(x + 60, y + 200, 'right');
 	this.add.text(x + 80,y + 190, "Seta Direita: Esconder cartas");
+	this.add.text(x + 80,y + 240, "Clique no 'R' para restart");
 
 
 	console.log("left");
@@ -147,6 +149,7 @@ function create() {
 
 
 	cursors = this.input.keyboard.createCursorKeys();
+
 }
 
 /* -------------------------------------------------------------------------------------- */
