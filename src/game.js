@@ -27,7 +27,6 @@ const getCardName = (suit, value) => {
 
 let cards = []; //ARRAY DE CARTAS
 let ScorePoints = []; //ARRAY DE PONTOS
-let ScorePointsMesa = []; //ARRAY DE PONTOS DA MESA
 /*
 CONFIG PHASER
  */
@@ -47,7 +46,7 @@ CONFIG DE TAMANHO
  */
 const width = 800;
 const height = 600;
-const x = width*0.5;  //centra
+let x = width*0.5;  //centra
 const y = height*0.5; //centra
 var cardName = "";
 var points;
@@ -148,7 +147,7 @@ function create() {
 	points = this.add.text(16, 16, 'Pontos: ' + ScorePoints[0], { fontSize: '32px', fill: '#fff' });
 
 	/* --- Inicializador de Pontos da Mesa --- */
-	pointsMesa = this.add.text(16, 500, 'Pontos da Mesa: ' + ScorePointsMesa[0], { fontSize: '20px', fill: '#fff' });
+	pointsMesa = this.add.text(16, 500, 'Pontos da Mesa: 0', { fontSize: '20px', fill: '#fff' });
 	/* --- Inicializar Dicas --- */
 	tips = this.add.text(16, 50, 'Dica: És bom demais para dicas', { fontSize: '30px', fill: '#fff' });
 
@@ -212,6 +211,27 @@ function update (){
 		game.scene.pause("default");
 		console.log("Chegou a vez da mesa");
 		tips.setText("Dica: Chegou vez da Mesa **");
+
+		var i = 0;
+		while(i<16){
+			let x = curentValue();
+			let point;
+			switch (x){
+				case 'A':
+					point = 11;
+					break;
+				case 'J':
+				case 'Q':
+				case 'K':
+					point = 10;
+					break;
+				default:
+					point = x;
+			}
+
+			i = i + point;
+			pointsMesa.setText("Pontos: " + i);
+		}
 
 	}
 }
