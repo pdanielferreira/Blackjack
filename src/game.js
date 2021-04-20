@@ -149,8 +149,33 @@ function create() {
 /* -------------------------------------------------------------------------------------- */
 function update (){
 	const leftArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
-	if(leftArrow.isUp){
-		setaLeft();
+	if(leftArrow.isDown){
+		console.log("Gerou");
+
+
+		cards.forEach(card => {
+			card.x -= 20
+		})
+
+
+		cardName = currentCardName();
+
+		// carreganto texturas
+		let card = this.add.image(x, y, 'card-back')
+
+		// load no plugin phaser para carregar minhas cartas
+		this.load.image(cardName, `./assets/${cardName}.png`);
+		this.load.once('complete', () => {
+			// texture loaded so use instead of the placeholder
+			card.setTexture(cardName)
+		})
+		this.load.start()
+
+
+		cards.push(card)
+		console.log(cards);
+
+
 	}
 	//----------------------------------------------------------------------------------------------------------------------
 	//const leftArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
@@ -204,7 +229,7 @@ function setaLeft(){
 	cardName = currentCardName();
 
 	// carreganto texturas
-	let card = this.add.image(x, y, 'card-back')
+	//let card = this.add.image(x, y, 'card-back')
 
 	// load no plugin phaser para carregar minhas cartas
 	this.load.image(cardName, `./assets/${cardName}.png`);
