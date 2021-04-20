@@ -27,7 +27,7 @@ const getCardName = (suit, value) => {
 
 let cards = []; //ARRAY DE CARTAS
 let ScorePoints = []; //ARRAY DE PONTOS
-
+let ScorePointsMesa = []; //ARRAY DE PONTOS DA MESA
 /*
 CONFIG PHASER
  */
@@ -51,6 +51,7 @@ const x = width*0.5;  //centra
 const y = height*0.5; //centra
 var cardName = "";
 var points;
+var pointsMesa;
 var tips;
 var cursors;
 
@@ -116,7 +117,8 @@ function create() {
 	this.add.text(x + 80,y + 140, "Seta Esquerda: Pedir mais cartas");
 	let right = this.add.image(x + 60, y + 200, 'right');
 	this.add.text(x + 80,y + 190, "Seta Direita: Esconder cartas");
-	this.add.text(x + 80,y + 240, "Clique no 'R' para restart");
+	this.add.text(x - 10,y + 250, "Clique no 'R' para restart");
+	this.add.text(x - 10,y + 270, "Clique no 'Espaço' para ser a vez da mesa");
 
 
 	console.log("left");
@@ -144,6 +146,9 @@ function create() {
 
 	/* --- Inicializar Pontos --- */
 	points = this.add.text(16, 16, 'Pontos: ' + ScorePoints[0], { fontSize: '32px', fill: '#fff' });
+
+	/* --- Inicializador de Pontos da Mesa --- */
+	pointsMesa = this.add.text(16, 500, 'Pontos da Mesa: ' + ScorePointsMesa[0], { fontSize: '20px', fill: '#fff' });
 	/* --- Inicializar Dicas --- */
 	tips = this.add.text(16, 50, 'Dica: És bom demais para dicas', { fontSize: '30px', fill: '#fff' });
 
@@ -201,6 +206,13 @@ function update (){
 		cards.forEach(carta => {
 			card.x += 20
 		})
+	}
+
+	if(this.input.keyboard.checkDown(cursors.space, 250)) {
+		game.scene.pause("default");
+		console.log("Chegou a vez da mesa");
+		tips.setText("Dica: Chegou vez da Mesa **");
+
 	}
 }
 
