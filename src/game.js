@@ -215,6 +215,7 @@ function update (){
 		var i = 0;
 		while(i<16){
 			let x = curentValue();
+			console.log(x);
 			let point;
 			switch (x){
 				case 'A':
@@ -228,10 +229,17 @@ function update (){
 				default:
 					point = x;
 			}
-
-			i = i + point;
+			console.log(point);
+			i = parseInt(i) + parseInt(point);
+			console.log(i);
 			pointsMesa.setText("Pontos: " + i);
 		}
+
+		if(i>21){
+			tips.setText("Parabéns. Ganhou. A mesa rebentou");
+		}
+
+		gameEnd(i);
 
 	}
 }
@@ -304,4 +312,21 @@ function gameStatus(myTotal){
 
 		points.setText("Pontos: " + myTotal);
 		tips.setText("Game Over X(");	}
+}
+
+function gameEnd(i){
+	const reducer = (accumulater, currentValue) => parseInt(accumulater) + parseInt(currentValue);
+	const myTotal = ScorePoints.reduce(reducer);
+	console.log("Pontos Jogador: " + myTotal);
+	console.log("Pontos da mesa:" + i);
+
+	if(i>myTotal){
+		tips.setText("A mesa ganhou. Mais sorte para a próxima");
+	}
+	if(i==myTotal){
+		tips.setText("Parabéns, conseguiu empatar com a mesa.");
+	}
+	if(myTotal>i){
+		tips.setText("Parabéns, conseguiu ganhar a mesa.");
+	}
 }
