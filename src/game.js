@@ -119,9 +119,7 @@ function create() {
 	this.add.text(x - 10,y + 250, "Clique no 'R' para restart");
 	this.add.text(x - 10,y + 270, "Clique no 'Espaço' para ser a vez da mesa");
 
-
 	console.log("left");
-
 
 	cards.forEach(card => {
 		card.x -= 20
@@ -147,10 +145,9 @@ function create() {
 	points = this.add.text(16, 16, 'Pontos: ' + ScorePoints[0], { fontSize: '32px', fill: '#fff' });
 
 	/* --- Inicializador de Pontos da Mesa --- */
-	pointsMesa = this.add.text(16, 500, 'Pontos da Mesa: 0', { fontSize: '20px', fill: '#fff' });
+	pointsMesa = this.add.text(250, 23, 'Pontos da Mesa: À espera do utilizador', { fontSize: '20px', fill: '#fff' });
 	/* --- Inicializar Dicas --- */
 	tips = this.add.text(16, 50, 'Dica: És bom demais para dicas', { fontSize: '30px', fill: '#fff' });
-
 
 	cursors = this.input.keyboard.createCursorKeys();
 
@@ -170,7 +167,6 @@ function update (){
 			card.x -= 20
 		})
 
-
 		cardName = currentCardName();
 
 		// carreganto texturas
@@ -183,7 +179,6 @@ function update (){
 			card.setTexture(cardName)
 		})
 		this.load.start()
-
 
 		cards.push(card)
 		console.log(cards);
@@ -232,7 +227,7 @@ function update (){
 			console.log(point);
 			i = parseInt(i) + parseInt(point);
 			console.log(i);
-			pointsMesa.setText("Pontos: " + i);
+			pointsMesa.setText("Pontos da mesa: " + i);
 		}
 
 		if(i>21){
@@ -243,7 +238,6 @@ function update (){
 
 	}
 }
-
 
 /**
  * <h3> Substituir valor de letras por pontos
@@ -327,6 +321,6 @@ function gameEnd(i){
 		tips.setText("Parabéns, conseguiu empatar com a mesa.");
 	}
 	if(myTotal>i){
-		tips.setText("Parabéns, conseguiu ganhar a mesa.");
+		tips.setText("Parabéns, conseguiu ganhar á mesa.");
 	}
 }
