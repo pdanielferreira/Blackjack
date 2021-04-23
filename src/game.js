@@ -90,6 +90,7 @@ function currentCardName(){
 /* --------------------------------------- Preload --------------------------------------- */
 /* --------------------------------------------------------------------------------------- */
 function preload(){
+	this.load.image("fundo", './src/fundo.png');
 	this.load.image("card-back", './assets/cardBack_green5.png');
 	this.load.image('left', './assets/arrowSilver_left.png');
 	this.load.image("right", "./assets/arrowSilver_right.png");
@@ -100,6 +101,7 @@ function preload(){
 /* --------------------------------------- CREATE --------------------------------------- */
 /* -------------------------------------------------------------------------------------- */
 function create() {
+	this.add.image(x, y, 'fundo');
 	//console.log("Executado com sucesso");         //Permite ver a consola se iniciou corretamente
 
 	if(this.textures.exists(cardName)){
