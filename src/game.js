@@ -91,7 +91,6 @@ function currentCardName(){
 /* --------------------------------------------------------------------------------------- */
 function preload(){
 	this.load.image("card-back", './assets/cardBack_green5.png');
-	/*this.load.image["cursor", cursor];*/
 	this.load.image('left', './assets/arrowSilver_left.png');
 	this.load.image("right", "./assets/arrowSilver_right.png");
 }
@@ -160,12 +159,11 @@ function create() {
 /* --------------------------------------- Update --------------------------------------- */
 /* -------------------------------------------------------------------------------------- */
 function update (){
-	//const leftArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
-	//if(leftArrow.isDown){
+	//ativa a função sempre que a tecla for primida por 250 ms
 	if(this.input.keyboard.checkDown(cursors.left, 250)) {
 		console.log("Gerou");
 
-
+		//Move a carta
 		cards.forEach(card => {
 			card.x -= 20
 		})
@@ -200,6 +198,7 @@ function update (){
 		if(card === null){
 			console.log('can not be null');
 		}
+		//Permite que a mesa fique mais limpa removendo as cartas mas não os pontos
 		card.destroy();
 
 		cards.forEach(carta => {
@@ -207,6 +206,7 @@ function update (){
 		})
 	}
 
+	//Permite que quando o jogador acabe a mesa possa jogar
 	if(this.input.keyboard.checkDown(cursors.space, 250)) {
 		game.scene.pause("default");
 		console.log("Chegou a vez da mesa");
@@ -270,7 +270,7 @@ function setPoints(suit, value){
 	}
 	ScorePoints.push(point.toString());
 
-	//Calcula os ponto
+	//Calcula os pontos
 	const reducer = (accumulater, currentValue) => parseInt(accumulater) + parseInt(currentValue);
 	const myTotal = ScorePoints.reduce(reducer);
 
@@ -283,6 +283,9 @@ function setPoints(suit, value){
 	}
 }
 
+/*
+Permite analisar os jogadores, e defenir se ganhou empatou ou perdeu
+ */
 function gameStatus(myTotal){
 	/* --- "Normal" --- */
 	if(myTotal > 1 && myTotal < 21){
@@ -314,6 +317,9 @@ function gameStatus(myTotal){
 		tips.setText("Game Over X(");	}
 }
 
+/*
+Define no fima da mesa jogar quem ganhou o jogo
+ */
 function gameEnd(i){
 	const reducer = (accumulater, currentValue) => parseInt(accumulater) + parseInt(currentValue);
 	const myTotal = ScorePoints.reduce(reducer);
