@@ -105,8 +105,8 @@ function currentCardName(){
 /* --------------------------------------- Preload --------------------------------------- */
 /* --------------------------------------------------------------------------------------- */
 function preload(){
+	this.load.image("fundo", './src/fundo.png');
 	this.load.image("card-back", './assets/cardBack_green5.png');
-	/*this.load.image["cursor", cursor];*/
 	this.load.image('left', './assets/arrowSilver_left.png');
 	this.load.image("right", "./assets/arrowSilver_right.png");
 }
@@ -116,7 +116,10 @@ function preload(){
 /* --------------------------------------- CREATE --------------------------------------- */
 /* -------------------------------------------------------------------------------------- */
 function create() {
+
 	console.log("A iniciar create()");         //Permite ver a consola se iniciou corretamente
+
+	this.add.image(x, y, 'fundo');
 
 	/* --- Load Texturas Cartas --- */
 	if(this.textures.exists(cardName)){
@@ -172,14 +175,12 @@ function create() {
 /* --------------------------------------- Update --------------------------------------- */
 /* -------------------------------------------------------------------------------------- */
 function update (){
-	//const leftArrow = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT)
-	//if(leftArrow.isDown){
 
 	/* --- Verifica se o utilizador clicou na seta esquerda --- */
 	/* --- Adiciona uma nova carta ao ecrã --- */
 	if(this.input.keyboard.checkDown(cursors.left, 250)) {
 		console.log("Esquerda");
-
+    
 		cards.forEach(card => {
 			card.x -= 20
 		})
@@ -215,6 +216,7 @@ function update (){
 		if(card === null){
 			console.log('can not be null');
 		}
+		//Permite que a mesa fique mais limpa removendo as cartas mas não os pontos
 		card.destroy();
 
 		cards.forEach(carta => {
@@ -308,9 +310,11 @@ function setPoints(suit, value){
 
 /**
  * <h3> Verifica o estado do jogo
+ * <p> Permite analisar os jogadores, e defenir se ganhou empatou ou perdeu
  *
  * @param myTotal - total de pontos
  */
+
 function gameStatus(myTotal){
 	/* --- "Normal" --- */
 	if(myTotal > 1 && myTotal < 21){
@@ -348,6 +352,7 @@ function gameStatus(myTotal){
  *
  * @param i - estado do jogo
  */
+
 function gameEnd(i){
 	const reducer = (accumulater, currentValue) => parseInt(accumulater) + parseInt(currentValue);
 	const myTotal = ScorePoints.reduce(reducer);
