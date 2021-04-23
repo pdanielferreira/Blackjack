@@ -105,7 +105,7 @@ function currentCardName(){
 /* --------------------------------------- Preload --------------------------------------- */
 /* --------------------------------------------------------------------------------------- */
 function preload(){
-	this.load.image("fundo", './src/fundo.png');
+	this.load.image("fundo", './assets/fundo.png');
 	this.load.image("card-back", './assets/cardBack_green5.png');
 	this.load.image('left', './assets/arrowSilver_left.png');
 	this.load.image("right", "./assets/arrowSilver_right.png");
@@ -359,7 +359,7 @@ function gameEnd(i){
 	console.log("Pontos Jogador: " + myTotal);
 	console.log("Pontos da mesa:" + i);
 
-	if(i>myTotal){
+	if(i>myTotal && i<22){
 		tips.setText("A mesa ganhou. Mais sorte para a próxima");
 	}
 	if(i==myTotal){
