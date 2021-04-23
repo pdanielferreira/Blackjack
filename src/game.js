@@ -1,6 +1,6 @@
-/*
-TODOS OS SIMBOLOS PERMITIDOS
- */
+/* ------------------------------------ */
+/* --- TODOS OS SIMBOLOS PERMITIDOS --- */
+/* ------------------------------------ */
 const suits = [
 	'Spades',
 	'Hearts',
@@ -8,28 +8,31 @@ const suits = [
 	'Diamonds'
 ]
 
-/*
-TODOS OS VALOR POSSIVEIS
- */
+/* -------------------------------- */
+/* --- TODOS OS VALOR POSSIVEIS --- */
+/* -------------------------------- */
 const values = [
 	'2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'
 ]
 
 var inicio = 0;
 
-/*
-OBTEM A CARTA DOS ASSETS
- */
+/* -------------------------------- */
+/* --- OBTEM A CARTA DOS ASSETS --- */
+/* -------------------------------- */
+
 const getCardName = (suit, value) => {
 	setPoints(suit, value);
 	return `card${suit}${value}`
 }
 
-let cards = []; //ARRAY DE CARTAS
-let ScorePoints = []; //ARRAY DE PONTOS
-/*
-CONFIG PHASER
- */
+/* --- Criação dos arrays --- */
+let cards = []; 		//ARRAY DE CARTAS
+let ScorePoints = []; 	//ARRAY DE PONTOS
+
+/* --------------------- */
+/* --- CONFIG PHASER --- */
+/* --------------------- */
 var config = {
 	type: Phaser.AUTO,
 	width: 800,
@@ -41,46 +44,58 @@ var config = {
 	}
 };
 
-/*
-CONFIG DE TAMANHO
- */
+/* ---------------------------------- */
+/* ---CONFIG DE TAMANHO DA JANELA --- */
+/* ---------------------------------- */
 const width = 800;
 const height = 600;
-let x = width*0.5;  //centra
-const y = height*0.5; //centra
+let x = width*0.5;  	//centra
+const y = height*0.5; 	//centra
 var cardName = "";
 var points;
 var pointsMesa;
 var tips;
 var cursors;
 
-/*
-INICIAÇÃO DO JOGO
- */
+/* --- INICIAÇÃO DO JOGO --- */
 const game = new Phaser.Game(config);
 
-/*
-Função para gerar valor random dos simbolos das cartas
+/**
+ * <h3> Função para gerar valor random dos simbolos das cartas
+ * <p> (espadas, ouros, copas, paus)
+ *
+ * @return - simbolo aleatorio do Array dos simbolos das cartas
  */
 function currentSuit(){
 	var randomSimbolo = Math.floor(Math.random()*suits.length);  //Escolhe um simbolo aleatorio tendo em conta o array
-	return suits[randomSimbolo];                                 //Devolve o simbolo gerado
+	return suits[randomSimbolo];                                 	//Devolve o simbolo gerado
 }
 
-/*
-Função para gerar valor random dos números das cartas
+/**
+ * <h3> Função para gerar valor random dos números das cartas
+ * <p> Gera um número entre 0 e o tamanho do Array e retorna o conteudo do Array nessa posição
+ *
+ * @return valor do Array na posição do número gerado. Ou se gerar um número menor do que 0 retorna 2
  */
 function curentValue(){
-	var randomValor = Math.floor(Math.random()*values.length);   //Escolhe uma carta aleatoria tendo em conta o array
-	if(randomValor < 0){                                              //Se o nº gerado menor que 0
+	var randomValor = Math.floor(Math.random()*values.length);	//Escolhe uma carta aleatoria tendo em conta o array
+	if(randomValor < 0){                                            //Se o nº gerado menor que 0
 		return values[0];                                           //Devolve sempre o valor na posição 0 (nº 2)
 	}
 
 	return values[randomValor];                                   //Devolve o valor gerado
 }
 
-/*
-FUNÇÃO PARA OBTER A CARTA ESPECIFICA EX: 2 COPAS
+/**
+ * <h3> FUNÇÃO PARA OBTER A CARTA ESPECIFICA EX: 2 COPAS
+ * <p> Usa as funções currentSuit e currentValue
+ *
+ * @return carta (getCardName)
+ *
+ * @see currentSuit
+ * @see curentValue
+ * @see getCardName
+ *
  */
 function currentCardName(){
 	return getCardName(currentSuit(), curentValue());
@@ -101,28 +116,26 @@ function preload(){
 /* --------------------------------------- CREATE --------------------------------------- */
 /* -------------------------------------------------------------------------------------- */
 function create() {
-	this.add.image(x, y, 'fundo');
-	//console.log("Executado com sucesso");         //Permite ver a consola se iniciou corretamente
 
+	console.log("A iniciar create()");         //Permite ver a consola se iniciou corretamente
+
+	this.add.image(x, y, 'fundo');
+
+	/* --- Load Texturas Cartas --- */
 	if(this.textures.exists(cardName)){
 		return this.image(x, y, cardName)
 	}
 
+	/* --- Load traseira das cartas --- */
 	let cardBack = this.add.image(x, y, 'card-back');
 
-	/*
-	Utilização das setas do teclado
-	 */
+	/* --- Texto a explicar o que faz cada tecla --- */
 	let left = this.add.image(x + 60, y + 150, 'left');
 	this.add.text(x + 80,y + 140, "Seta Esquerda: Pedir mais cartas");
 	let right = this.add.image(x + 60, y + 200, 'right');
 	this.add.text(x + 80,y + 190, "Seta Direita: Esconder cartas");
 	this.add.text(x - 10,y + 250, "Clique no 'R' para restart");
 	this.add.text(x - 10,y + 270, "Clique no 'Espaço' para ser a vez da mesa");
-
-
-	console.log("left");
-
 
 	cards.forEach(card => {
 		card.x -= 20
@@ -141,17 +154,18 @@ function create() {
 	})
 	this.load.start()
 
+	/* --- Coloca a primeira carta no ecrã --- */
 	cards.push(card)
-	console.log(cards);
+	console.log(cards);	// print para a consola da primeira carta
 
 	/* --- Inicializar Pontos --- */
 	points = this.add.text(16, 16, 'Pontos: ' + ScorePoints[0], { fontSize: '32px', fill: '#fff' });
 
 	/* --- Inicializador de Pontos da Mesa --- */
-	pointsMesa = this.add.text(16, 500, 'Pontos da Mesa: 0', { fontSize: '20px', fill: '#fff' });
+	pointsMesa = this.add.text(250, 23, 'Pontos da Mesa: À espera do utilizador', { fontSize: '20px', fill: '#fff' });
+
 	/* --- Inicializar Dicas --- */
 	tips = this.add.text(16, 50, 'Dica: És bom demais para dicas', { fontSize: '30px', fill: '#fff' });
-
 
 	cursors = this.input.keyboard.createCursorKeys();
 
@@ -161,15 +175,15 @@ function create() {
 /* --------------------------------------- Update --------------------------------------- */
 /* -------------------------------------------------------------------------------------- */
 function update (){
-	//ativa a função sempre que a tecla for primida por 250 ms
-	if(this.input.keyboard.checkDown(cursors.left, 250)) {
-		console.log("Gerou");
 
-		//Move a carta
+	/* --- Verifica se o utilizador clicou na seta esquerda --- */
+	/* --- Adiciona uma nova carta ao ecrã --- */
+	if(this.input.keyboard.checkDown(cursors.left, 250)) {
+		console.log("Esquerda");
+    
 		cards.forEach(card => {
 			card.x -= 20
 		})
-
 
 		cardName = currentCardName();
 
@@ -184,13 +198,15 @@ function update (){
 		})
 		this.load.start()
 
-
+		/* --- Põe a carta gerada no ecrã --- */
 		cards.push(card)
-		console.log(cards);
+		console.log(cards);		// log na consola do carta que saiu
 	}
 
+	/* --- Verifica se o utilizador clicou na tecla direita --- */
+	/* --- Remove a ultima carda do ecrã --- */
 	if(this.input.keyboard.checkDown(cursors.right, 250)) {
-		console.log("Carregou Direita");
+		console.log("Direita");
 		
 		if (cards.length <= 0) {
 			return
@@ -208,16 +224,22 @@ function update (){
 		})
 	}
 
-	//Permite que quando o jogador acabe a mesa possa jogar
+	/* --- Verifica se o utilizador clicou no espaço --- */
+	/* --- O utilizador para de adicionar cartas e é gerado os pontos da mesa e verifica quem ganhou --- */
 	if(this.input.keyboard.checkDown(cursors.space, 250)) {
 		game.scene.pause("default");
 		console.log("Chegou a vez da mesa");
 		tips.setText("Dica: Chegou vez da Mesa **");
 
+		/* --- Simulação do joga da mesa --- */
+		// i = pontos da mesa
 		var i = 0;
+		// quando tiver 16 pontos para de ir buscar pontos
 		while(i<16){
 			let x = curentValue();
-			console.log(x);
+			console.log(x); // log na consola dos pontos que a mesa tirou - pré
+
+			// Gera os pontos da jogada da mesa
 			let point;
 			switch (x){
 				case 'A':
@@ -231,21 +253,22 @@ function update (){
 				default:
 					point = x;
 			}
-			console.log(point);
+			console.log(point); // log na consola dos pontos que a mesa tirou nesta jogada
+
 			i = parseInt(i) + parseInt(point);
-			console.log(i);
-			pointsMesa.setText("Pontos: " + i);
+
+			console.log(i);	// log na consola dos pontos que a mesa tirou - pós
+
+			pointsMesa.setText("Pontos da mesa: " + i);
 		}
 
+		/* --- A mesa ganhou pontos demais --- */
 		if(i>21){
 			tips.setText("Parabéns. Ganhou. A mesa rebentou");
 		}
-
 		gameEnd(i);
-
 	}
 }
-
 
 /**
  * <h3> Substituir valor de letras por pontos
@@ -285,9 +308,13 @@ function setPoints(suit, value){
 	}
 }
 
-/*
-Permite analisar os jogadores, e defenir se ganhou empatou ou perdeu
+/**
+ * <h3> Verifica o estado do jogo
+ * <p> Permite analisar os jogadores, e defenir se ganhou empatou ou perdeu
+ *
+ * @param myTotal - total de pontos
  */
+
 function gameStatus(myTotal){
 	/* --- "Normal" --- */
 	if(myTotal > 1 && myTotal < 21){
@@ -319,9 +346,13 @@ function gameStatus(myTotal){
 		tips.setText("Game Over X(");	}
 }
 
-/*
-Define no fima da mesa jogar quem ganhou o jogo
+/**
+ * <h3> Quando o utilizador jogo contra a mesa depois aparece isto
+ * <p> Mostra todos os pontos e textos
+ *
+ * @param i - estado do jogo
  */
+
 function gameEnd(i){
 	const reducer = (accumulater, currentValue) => parseInt(accumulater) + parseInt(currentValue);
 	const myTotal = ScorePoints.reduce(reducer);
@@ -335,6 +366,6 @@ function gameEnd(i){
 		tips.setText("Parabéns, conseguiu empatar com a mesa.");
 	}
 	if(myTotal>i){
-		tips.setText("Parabéns, conseguiu ganhar a mesa.");
+		tips.setText("Parabéns, conseguiu ganhar á mesa.");
 	}
 }
