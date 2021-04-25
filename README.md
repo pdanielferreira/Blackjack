@@ -3,6 +3,6 @@ Trabalho para cadeira de TM
 Ano: 2020/2021
 
 Projeto feito por:
--> Carlos Vilas Boas;
--> Pedor Ferreira
+<p>-> Carlos Vilas Boas;
+<p>-> Pedro Ferreira
 
